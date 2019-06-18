@@ -1,0 +1,230 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>MonsterHP</title>
+
+		<!-- Bootstrap -->
+		<link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="resources/bootstrap_select/css/bootstrap-select.min.css" rel="stylesheet" />
+
+		<!-- 5e Stat Block -->
+		<link rel="import" href="resources/statblock5e/top-stats.html">
+	    <link rel="import" href="resources/statblock5e/creature-heading.html">
+	    <link rel="import" href="resources/statblock5e/abilities-block.html">
+	    <link rel="import" href="resources/statblock5e/property-block.html">
+	    <link rel="import" href="resources/statblock5e/property-line.html">
+	    <link rel="import" href="resources/statblock5e/stat-block.html">
+
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+		<!-- MHP -->
+		<link href="resources/css/mhp.css" rel="stylesheet" />
+	</head>
+	
+	<body onload="mhp.init();">
+		<div id="premade-modal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">Premades Config</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form" class="add-premade-form" action="javascript:void(0)">
+							<table class="table premade-table">
+								<thead>
+									<tr class="row">
+										<th class="col-xs-6">Creature Name</th>
+										<th class="col-xs-5">HP Expression</th>
+										<th class="col-xs-1"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="row">
+										<td class="col-xs-6 form-group">
+											<input type="text" class="form-control name-input text-center" placeholder="Name" pattern="\s*\S.{0,24}\s*" required/>
+										</td>
+										<td class="col-xs-5 form-group">
+											<input type="text" class="form-control max-hp-input text-center" placeholder="Max HP"	pattern="(\s*(\+|\-)?\s*(([0-9]{0,3}d[0-9]{1,3})|([0-9]{1,4}))\s*)(\s*(\+|\-)\s*(([0-9]{0,3}d[0-9]{1,3})|([0-9]{1,4}))\s*)*" required/>
+										</td>
+										<td class="col-xs-1 form-group">
+											<button class="btn btn-info add-monster-button" type="submit">Add</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="premade-xml-modal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">Premades XML Config</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form" class="add-premade-xml-form">
+							<input type="file" id="premadeXmlFileInput"/>
+							
+							<div class="progress">
+								<div id="add-premade-xml-progress" class="progress-bar progress-bar-info" role="progressbar" style="width: 0%;">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button id="add-premade-xml-button" type="button" class="btn btn-info" onclick="mhp_stats.updatePremadesXml()">
+							<span class="hidden glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Add Premades
+						</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="stat-block-modal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div id="stat-block-container">
+						<stat-block>
+						</stat-block>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li class="dropdown">
+						<a href="javascript:void(0);" class="dropdown-toggle main-menu" data-toggle="dropdown" role="button" aria-expanded="false">
+							MonsterHP <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="javascript:void(0);" data-toggle="modal" data-target="#premade-modal">Premades Config</a></li>
+							<li><a href="javascript:void(0);" data-toggle="modal" data-target="#premade-xml-modal">Premades XML Config</a></li>
+							<li class="divider"></li>
+							<li><a href="javascript:void(0);" onclick="mhp.removeAll();">Remove All</a></li>
+						</ul>
+					</li>
+				</ul>
+
+				<form class="navbar-form navbar-left" role="search">
+					<div class="form-group">
+						<select class="selectpicker premade-select" data-live-search="true" data-show-subtext="true" data-size="10" title='Premade...'>
+						</select>
+						<button type="button" class="btn btn-info" onclick="mhp.addFromPremade();">Add</button>
+					</div>
+				</form>
+			</div>
+		</nav>
+
+		<div id="main-container" class="container-fluid">
+			<div class="row monster-row">
+				<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 hp-column">
+					<div class="well">
+						<form role="form" class="add-monster-form" action="javascript:void(0)">
+							<div class="form-group">
+								<input type="text" class="form-control name-input text-center" placeholder="Name" pattern="\s*\S.{0,24}\s*" required/>
+							</div>
+
+							<div class="row">
+								<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 left-column">
+									<div class="form-group">
+										<input type="text" class="form-control max-hp-input text-center" placeholder="Max HP"	pattern="(\s*(\+|\-)?\s*(([0-9]{0,3}d[0-9]{1,3})|([0-9]{1,4}))\s*)(\s*(\+|\-)\s*(([0-9]{0,3}d[0-9]{1,3})|([0-9]{1,4}))\s*)*" required/>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 right-column">
+									<div class="form-group">
+										<button class="btn btn-info add-monster-button" type="submit">Add</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="hidden-content">
+				<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 hp-column monster-hp-column hidden-content">
+					<div class="well monster-hp-panel">
+						<a class="close pull-right remove-monster-button" href="javascript:void(0)" onclick="mhp.removeMonster(this);" role="button">
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+						</a>
+						<a class="pull-left monster-stats-button hidden" href="javascript:void(0)" onclick="mhp_stats.showMonsterStats(this);" role="button">
+							<span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+						</a>
+						<h5 class="text-center monster-title">
+							<span class="monster-name-title"></span>
+							<span class="monster-number-title">(1)</span>
+						</h5>
+						<div class="progress">
+							<div class="progress-bar progress-bar-info hp-bar" role="progressbar" style="width: 100%">
+								<span class="show hp-bar-text"></span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 left-column">
+								<form role="form" class="form-inline remove-hp-form" action="javascript:void(0)">
+									<div class="form-group input-group">
+										<span class="input-group-btn">
+											<button class="btn btn-info hp-button" type="submit">
+												<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+											</button>
+										</span>
+										<input type="text" class="form-control hp-input dmg-input text-center" placeholder="DMG" pattern="[0-9]{0,5}"/>
+									</div>
+								</form>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 right-column">
+								<form role="form" class="form-inline add-hp-form" action="javascript:void(0)">
+									<div class="form-group input-group">
+										<input type="text" class="form-control hp-input heal-input text-center" placeholder="Heal" pattern="[0-9]{0,5}"/>
+										<span class="input-group-btn">
+											<button class="btn btn-info hp-button" type="submit">
+												<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+											</button>
+										</span>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- jQuery -->
+		<script src="resources/jquery.min.js"></script>
+
+		<!-- Bootstrap -->
+		<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+		<script src="resources/bootstrap_select/js/bootstrap-select.min.js"></script>
+
+		<!-- Validator -->
+		<script src="resources/validator/validator.min.js"></script>
+
+		<script src="resources/mhp-view.js"></script>
+		<script src="resources/mhp-stats.js"></script>
+		<script src="resources/mhp-stats-parser.js"></script>
+		<script src="resources/mhp-stats-attack.js"></script>
+	</body>
+</html>

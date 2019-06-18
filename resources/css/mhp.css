@@ -1,0 +1,130 @@
+.main-menu {
+	font-size: 20px;
+}
+
+#main-container {
+	padding-top: 55px;
+	height: 100%;
+}
+
+form {
+	margin-bottom: 0px;
+}
+
+.hidden-content {
+	display: none;
+}
+
+.premade-select .dropdown-menu>.active>a {
+	background-color: #f5f5f5;
+	color: #333;
+}
+
+.monster-row {
+	padding: 8px;
+}
+
+.well {
+	padding: 8px;
+	margin-bottom: 16px;
+}
+
+.hp-column {
+	padding-right: 8px;
+	padding-left: 8px;
+}
+
+.left-column {
+	padding-right: 2px;
+}
+
+.right-column {
+	padding-left: 2px;
+}
+
+.add-monster-form {
+	margin-top: 5px;
+}
+
+.add-monster-form .form-group {
+	margin-bottom: 4px;
+}
+
+.max-hp-input {
+	width: 100%;
+}
+
+.add-monster-button {
+	width: 100%;
+}
+
+.remove-monster-button {
+	font-size: 12px;
+}
+
+.close-attack-button {
+	font-size: 12px;
+	padding-top: 8px;
+	padding-right: 8px;
+}
+
+.monster-title {
+	margin: 4px;
+}
+
+.monster-hp-panel {
+	background-color: #FFFFFF;
+}
+
+.monster-dead {
+	background-color: #C8C8C8 !important;
+}
+
+.progress {
+	position: relative;
+	margin-bottom: 4px;
+}
+
+.hp-bar-text {
+	position: absolute;
+	width: 100%;
+	color: #333;
+	font-weight: bold;
+}
+
+.hp-input {
+	width: 100% !important;
+}
+
+.hp-button {
+	padding-left: 2px;
+	padding-right: 2px;
+	height: 34px;
+}
+
+.remove-premade-button {
+	float: none !important;
+}
+
+#stat-block-modal .modal-dialog {
+	width: 420px;
+}
+
+#stat-block-container * {
+	line-height:normal;
+}
+
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
